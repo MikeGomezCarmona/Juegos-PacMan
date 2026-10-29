@@ -140,7 +140,16 @@ def move():
                 vector(0, 5),
                 vector(0, -5),
             ]
-            plan = choice(options)
+            # Filtrar solo las direcciones válidas desde este punto
+            valid_options = [opt for opt in options if valid(point + opt)]
+
+            if valid_options:
+                # Elegir la que más acerque a Pacman
+                plan = min(valid_options, key=lambda opt: abs(pacman - (point + opt)))
+            else:
+                # Sin salida válida: quedarse quieto (no debería pasar en este mapa)
+                plan = vector(0, 0)
+
             course.x = plan.x
             course.y = plan.y
 
